@@ -1,11 +1,10 @@
 from Parser import Parser
 from BankCard import CardNum
 
-p = Parser()
 c = CardNum()
 
 # c.enter_card_num()
-c.data_from_file()
+c.add_data_to_file()
 
 # p.connect()
 # p.to_dict()
