@@ -11,7 +11,7 @@ class Parser:
         self.__bin_list = None
         self.__result_list = []
 
-    def connect(self):
+    def connect(self):  # connect to site
         try:
             self.__page = requests.get(self.__url)
             if self.__page.status_code == 200:
@@ -23,7 +23,7 @@ class Parser:
         except ConnectionError:
             print("Connection is failed")
 
-    def __parse_bin(self):
+    def __parse_bin(self):  # parse table from site
         soup = BeautifulSoup(self.__page.text, "lxml")
         self.__bin_list = soup.findAll('table')
         bin_str = self.__bin_list[1]
@@ -35,7 +35,7 @@ class Parser:
         self.__info_converter(1)
         self.__info_converter(3)
 
-    def __info_converter(self, ind: int):
+    def __info_converter(self, ind: int):  # convert data
 
         for i in range(ind, len(self.__result_list)-(ind+1), 4):
             if self.__result_list[i].find(","):
@@ -54,7 +54,7 @@ class Parser:
                 self.__result_list[i] = full_bin_list
 
     @staticmethod
-    def __flatten_list(nested_list) -> list:
+    def __flatten_list(nested_list) -> list:  # merge list
         flat_list = []
         for item in nested_list:
             if isinstance(item, list):
@@ -65,14 +65,14 @@ class Parser:
         return flat_list
 
     @staticmethod
-    def __nums_range(nums: str) -> list:
+    def __nums_range(nums: str) -> list:  # 1-2 to 1, 2, 3
         start, end = map(int, nums.split("-"))
 
         numbers = range(start, end+1)
 
         return [str(num) for num in numbers]
 
-    def __make_sub_arrays(self) -> list:
+    def __make_sub_arrays(self) -> list:  # combining values
         values_list = []
         temp_list = []
         counter = 0
@@ -88,7 +88,7 @@ class Parser:
 
         return values_list
 
-    def to_dict(self):
+    def to_dict(self):  # list to dict
         keys_list = [self.__result_list[x] for x in range(0, len(self.__result_list)-1, 4)]
 
         values_array = self.__make_sub_arrays()
